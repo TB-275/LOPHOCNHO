@@ -215,13 +215,21 @@ function clearDragPreview() {
 }
 function restartAfterLift() {
   if (state.currentNode === null || state.complete) return;
+  
+  // Đưa level về 0 (Màn 1) và xóa các manh mối đã thu thập
+  state.level = 0;
+  state.clues = [];
+  renderClueStack(); 
   renderLevel();
-  $('#instruction').textContent = 'Bạn đã nhấc tay — hãy chơi lại từ điểm đỏ.';
+  
+  // Đổi câu thông báo cho phù hợp với luật mới
+  $('#instruction').textContent = 'Bạn đã nhấc tay — Phải chơi lại từ đầu!';
   $('#instruction').classList.add('error-text');
+  
   setTimeout(() => {
     if (!state.complete) $('#instruction').textContent = 'Nối liền từng điểm mà không nhấc tay.';
     $('#instruction').classList.remove('error-text');
-  }, 1500);
+  }, 2000); // Tăng thời gian hiển thị thông báo lỗi lên 2s để người chơi kịp đọc
 }
 function celebrateNode(node) {
   const dot = nodeLayer.querySelector(`[data-node="${node}"]`);
